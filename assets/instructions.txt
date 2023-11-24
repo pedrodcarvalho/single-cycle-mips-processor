@@ -1,0 +1,6 @@
+00100000000010000000000000000000 # addi	$t0,   $zero, 0		        # store 0 in $t1
+00100000000010010000000000000001 # addi	$t1,   $zero, 1		        # store 1 in $t2
+00000001000010010101000000100000 # add	$t2,   $t0,   $t1		    # add the two previous numbers together
+00000000000010010100000000100000 # add	$t0,   $zero, $t1		    # store previous value in lower register
+00000000000010100100100000100000 # add	$t1,   $zero, $t2		    # store new value in register
+00010000000000001111111111111100 # beq	$zero, $zero, start_loop	# next iteration

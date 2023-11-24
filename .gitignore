@@ -1,0 +1,6 @@
+# Questa FPGA Simulator files
+work/*
+*.mti
+*.mpf
+*.wlf
+transcript
