@@ -18,6 +18,6 @@ architecture behavioral of shifter is
     signal temp: std_logic_vector(n2-1 downto 0);
 
 begin
-    temp <= std_logic_vector(resize(unsigned(x), n2)); -- This is required if you want to increase or decrease the number of bits
+    temp <= std_logic_vector(resize(unsigned(x), n2)); -- Temporary variable is needed because the resize function only works with unsigned vectors
     y <= std_logic_vector(shift_left(signed(temp), k));
 end behavioral;

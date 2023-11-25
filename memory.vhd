@@ -14,17 +14,6 @@ end memory;
 architecture behavioral of memory is
     type mem_array is array(0 to 31) of STD_LOGIC_VECTOR (31 downto 0);
     signal data_mem: mem_array := (
-        X"00000000", -- initialize data memory
-        X"00000000", -- mem 1
-        X"00000000",
-        X"00000000",
-        X"00000000",
-        X"00000000",
-        X"00000000",
-        X"00000000",
-        X"00000000",
-        X"00000000",
-        X"00000000", -- mem 10
         X"00000000",
         X"00000000",
         X"00000000",
@@ -34,7 +23,6 @@ architecture behavioral of memory is
         X"00000000",
         X"00000000",
         X"00000000",
-        X"00000000", -- mem 20
         X"00000000",
         X"00000000",
         X"00000000",
@@ -44,7 +32,19 @@ architecture behavioral of memory is
         X"00000000",
         X"00000000",
         X"00000000",
-        X"00000000", -- mem 30
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
         X"00000000"
     );
 

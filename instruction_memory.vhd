@@ -1,32 +1,21 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
-use STD.textio.all; -- Required for freading a file
+use STD.textio.all; -- For reading from files
 
 entity instruction_memory is
     port (
         read_address        : in  STD_LOGIC_VECTOR (31 downto 0);
         instruction         : out STD_LOGIC_VECTOR (31 downto 0);
-        last_instr_address  : out STD_LOGIC_VECTOR (31 downto 0)
+        last_instruction_address  : out STD_LOGIC_VECTOR (31 downto 0)
     );
 end instruction_memory;
 
 architecture behavioral of instruction_memory is
 
-    -- 128 byte instruction memory (32 rows * 4 bytes/row)
+    -- 32 x 32-bit instruction memory (4 bytes per instruction)
     type mem_array is array (0 to 31) of STD_LOGIC_VECTOR (31 downto 0);
     signal data_mem : mem_array := (
-        "00000000000000000000000000000000", -- initialize data memory
-        "00000000000000000000000000000000", -- mem 1
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000",
-        "00000000000000000000000000000000", -- mem 10
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
@@ -36,7 +25,6 @@ architecture behavioral of instruction_memory is
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
-        "00000000000000000000000000000000", -- mem 20
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
@@ -46,13 +34,25 @@ architecture behavioral of instruction_memory is
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
         "00000000000000000000000000000000",
-        "00000000000000000000000000000000", -- mem 30
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
         "00000000000000000000000000000000"
     );
 
 begin
 
-    -- The process for reading the instructions into memory
+    -- Reads the binary code instruction into the instruction memory
     process
         file file_pointer : text open read_mode is "/home/pedro/Codes/single-cycle-mips-processor/assets/instructions.txt";
         variable line_content : string(1 to 32);
@@ -62,12 +62,9 @@ begin
         variable char : character := '0';
 
     begin
-        -- Open instructions.txt and only read from it
-        -- Read until the end of the file is reached
         while not endfile(file_pointer) loop
-            readline(file_pointer, line_num); -- Read a line from the file
-            READ(line_num, line_content); -- Turn the string into a line (looks weird right? Thanks, Obama)
-            -- Convert each character in the string to a bit and save into memory
+            readline(file_pointer, line_num);
+            READ(line_num, line_content);
             for j in 1 to 32 loop
                 char := line_content(j);
                 if (char = '0') then
@@ -80,16 +77,16 @@ begin
         end loop;
 
         if i > 0 then
-            last_instr_address <= std_logic_vector(to_unsigned((i - 1) * 4, last_instr_address'length));
+            last_instruction_address <= std_logic_vector(to_unsigned((i - 1) * 4, last_instruction_address'length));
         else
-            last_instr_address <= "00000000000000000000000000000000";
+            last_instruction_address <= "00000000000000000000000000000000";
         end if;
 
-        file_close(file_pointer); -- Close the file
-        wait; -- ( ?� ?? ?�)
+        file_close(file_pointer);
+        wait;
     end process;
 
-    -- Since the registers are in multiples of 4 bytes, we can ignore the last two bits
+    -- Registers have 4 bytes each, so it's necessary to discard the last two bits
     instruction <= data_mem(to_integer(unsigned(read_address(31 downto 2))));
 
 end behavioral;
