@@ -11,6 +11,42 @@ architecture testbench of tb_memory is
     signal MemWrite, MemRead, ck: std_logic;
     signal read_data: std_logic_vector(31 downto 0);
 
+    type mem_array is array(0 to 31) of STD_LOGIC_VECTOR (31 downto 0);
+    signal data_mem: mem_array := (
+        X"FF00FF00",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000",
+        X"00000000"
+    );
+
     component memory
         port (
             address, write_data: in STD_LOGIC_VECTOR (31 downto 0);
@@ -34,6 +70,7 @@ begin
     begin
         -- Test case 1: Write data to memory
         address <= "00000000000000000000000000000000";
+        MemRead <= '0';
         write_data <= "11111111000000001111111100000000";
         MemWrite <= '1';
         ck <= '0';

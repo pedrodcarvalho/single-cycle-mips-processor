@@ -9,8 +9,43 @@ architecture testbench of tb_register_file is
     signal ck, RegWrite: std_logic := '0';
     signal read_reg_1, read_reg_2, write_reg: std_logic_vector(4 downto 0);
     signal write_data, read_data_1, read_data_2: std_logic_vector(31 downto 0);
-    type mem_array is array (0 to 31) of std_logic_vector(31 downto 0);
-    signal reg_mem: mem_array;
+
+    -- register file of 32 32-bit register_file
+    type mem_array is array(0 to 31) of STD_LOGIC_VECTOR (31 downto 0);
+    signal reg_mem: mem_array := (
+        "00000000000000000000000000000000", -- $zero
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "11110000111100001111000011110000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000",
+        "00000000000000000000000000000000"
+    );
 
     component register_file
         port (
@@ -21,9 +56,7 @@ architecture testbench of tb_register_file is
             write_reg   : in std_logic_vector(4 downto 0);
             write_data  : in std_logic_vector(31 downto 0);
             read_data_1 : out std_logic_vector(31 downto 0);
-            read_data_2 : out std_logic_vector(31 downto 0);
-            mem_array   : in mem_array;
-            reg_mem     : out mem_array
+            read_data_2 : out std_logic_vector(31 downto 0)
         );
     end component;
 begin
@@ -36,9 +69,7 @@ begin
             write_reg => write_reg,
             write_data => write_data,
             read_data_1 => read_data_1,
-            read_data_2 => read_data_2,
-            mem_array => mem_array,
-            reg_mem => reg_mem
+            read_data_2 => read_data_2
         );
 
     process
@@ -46,6 +77,8 @@ begin
         -- Test case 1: Write data to register 5
         ck <= '0';
         RegWrite <= '1';
+        read_reg_1 <= "00000";
+        read_reg_2 <= "00000";
         write_reg <= "00101";
         write_data <= "11110000111100001111000011110000";
         wait for 10 ns;
